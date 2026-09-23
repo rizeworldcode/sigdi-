@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Home, LayoutGrid, Info, UtensilsCrossed, User } from 'lucide-react';
+import { Menu, X, Home, LayoutGrid, Info, UtensilsCrossed, User, Images } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate }) {
@@ -80,8 +80,15 @@ export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate
             </a>
           </div>
 
-          {/* Right Nav: "→ Contact" matching screenshot */}
+          {/* Right Nav: Gallery & Contact */}
           <div className="nav-actions desktop-only">
+            <a 
+              href="/gallery" 
+              className={`nav-link ${currentPage === 'gallery' ? 'active' : ''}`}
+              onClick={(e) => handleNavClick(e, 'gallery')}
+            >
+              Gallery
+            </a>
             <motion.button 
               onClick={(e) => handleNavClick(e, 'contact')} 
               className={`nav-contact-link ${currentPage === 'contact' ? 'active' : ''}`}
@@ -133,6 +140,13 @@ export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate
                 onClick={(e) => handleMobileNavClick(e, 'restaurant')}
               >
                 Restaurant
+              </a>
+              <a 
+                href="/gallery" 
+                className={currentPage === 'gallery' ? 'active-mobile' : ''}
+                onClick={(e) => handleMobileNavClick(e, 'gallery')}
+              >
+                Gallery
               </a>
               <button 
                 className="mobile-contact-btn" 
@@ -204,7 +218,20 @@ export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate
             <span className="dock-label">Restaurant</span>
           </button>
 
-          {/* 5. Contact */}
+          {/* 5. Gallery */}
+          <button
+            type="button"
+            className={`dock-item ${currentPage === 'gallery' ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, 'gallery')}
+            aria-label="Gallery"
+          >
+            <span className="dock-icon">
+              <Images size={20} strokeWidth={currentPage === 'gallery' ? 2.2 : 1.7} />
+            </span>
+            <span className="dock-label">Gallery</span>
+          </button>
+
+          {/* 6. Contact */}
           <button
             type="button"
             className={`dock-item ${currentPage === 'contact' ? 'active' : ''}`}

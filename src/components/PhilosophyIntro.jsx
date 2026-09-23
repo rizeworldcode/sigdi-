@@ -14,8 +14,8 @@ function WordReveal({ children, progress, range, isPink }) {
   const y = useTransform(progress, range, [3, 0]);
 
   return (
-    <motion.span 
-      style={{ opacity, y }} 
+    <motion.span
+      style={{ opacity, y }}
       className={`intro-word ${isPink ? 'pink-accent-word' : 'dark-word'}`}
     >
       {children}{' '}
@@ -39,22 +39,22 @@ export default function PhilosophyIntro() {
     <section id="about" className="philosophy-section-2" ref={sectionRef}>
       <div className="container philosophy-container-2">
         <div className="philosophy-grid-2">
-          
+
           {/* Left Column: Arched Floral Walkway Image (comes from LEFT) */}
-          <motion.div 
+          <motion.div
             className="philosophy-image-col-2"
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <motion.div 
+            <motion.div
               className="philosophy-arch-wrapper"
               style={{ y: yArch }}
             >
-              <motion.img 
-                src="/hero/sigdi 4.png" 
-                alt="Luxury chandelier and canopy at Sigdi Resort" 
+              <motion.img
+                src="/hero/segdi 4.png"
+                alt="Luxury chandelier and canopy at Sigdi Resort"
                 className="philosophy-arch-img-2"
                 whileHover={{ scale: 1.04 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -63,7 +63,7 @@ export default function PhilosophyIntro() {
           </motion.div>
 
           {/* Right Column: Top Pink Line, Tag, Headline & Body (comes from RIGHT) */}
-          <motion.div 
+          <motion.div
             className="philosophy-content-col-2"
             initial={{ opacity: 0, x: 80 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -71,7 +71,7 @@ export default function PhilosophyIntro() {
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
             {/* Top Pink Line with [ 01 SIGDI RESORT ] tag on far right */}
-            <motion.div 
+            <motion.div
               className="philosophy-top-divider-2"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -92,9 +92,9 @@ export default function PhilosophyIntro() {
                   const start = idx / totalWords;
                   const end = start + (1 / totalWords);
                   return (
-                    <WordReveal 
-                      key={`w1-${idx}`} 
-                      progress={scrollYProgress} 
+                    <WordReveal
+                      key={`w1-${idx}`}
+                      progress={scrollYProgress}
                       range={[start, end]}
                       isPink={false}
                     >
@@ -109,9 +109,9 @@ export default function PhilosophyIntro() {
                   const start = globalIdx / totalWords;
                   const end = start + (1 / totalWords);
                   return (
-                    <WordReveal 
-                      key={`w2-${idx}`} 
-                      progress={scrollYProgress} 
+                    <WordReveal
+                      key={`w2-${idx}`}
+                      progress={scrollYProgress}
                       range={[start, end]}
                       isPink={true}
                     >
@@ -123,7 +123,7 @@ export default function PhilosophyIntro() {
             </h2>
 
             {/* Description Paragraph */}
-            <motion.p 
+            <motion.p
               className="philosophy-paragraph-2"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ export default function PhilosophyIntro() {
 
         {/* Bottom Right Floating Caption Note */}
         <div className="philosophy-bottom-row-2">
-          <motion.div 
+          <motion.div
             className="bottom-right-note-2"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}

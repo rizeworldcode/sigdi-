@@ -136,6 +136,7 @@ export default function Footer({ onOpenBooking, onNavigate }) {
                   <li><a href="/" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('home'); }}>Home</a></li>
                   <li><a href="/services" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('services'); }}>Services</a></li>
                   <li><a href="/about" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('about'); }}>About</a></li>
+                  <li><a href="/gallery" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('gallery'); }}>Gallery</a></li>
                   <li><a href="/restaurant" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('restaurant'); }}>Restaurant</a></li>
                   <li><a href="/contact" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('contact'); }}>Contact</a></li>
                 </ul>

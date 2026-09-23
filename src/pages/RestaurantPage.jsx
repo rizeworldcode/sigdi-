@@ -139,7 +139,71 @@ _Sent via Sigdi Resort Website Restaurant Form_`;
         </div>
       </section>
 
-      {/* 3. SECTION: "RESERVE YOUR TABLE" Floating White Card matching Contact Page */}
+      {/* 3. SECTION: RESTAURANT & DINING ATMOSPHERE (sigdi 12.png, sigdi 13.png, sigdi 14.png) */}
+      <section className="restaurant-gallery-showcase-section">
+        <div className="container">
+          <div className="umami-experience-header" style={{ marginBottom: '40px' }}>
+            <motion.h2
+              className="umami-experience-title"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              LIVE HEARTH & OPEN-AIR AMBIENCE
+            </motion.h2>
+            <p className="umami-experience-sub">
+              Experience Rajasthan's finest charcoal flavors amidst tranquil garden canopies, ambient warm lighting, and royal culinary hospitality.
+            </p>
+          </div>
+
+          <div className="restaurant-ambiance-grid">
+            {/* Card 1: sigdi 12.png */}
+            <motion.div 
+              className="restaurant-ambiance-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              whileHover={{ y: -8 }}
+            >
+              <div className="restaurant-ambiance-img-wrap">
+                <img src="/hero/sigdi 12.png" alt="Sigdi Live Hearth Dining Experience" />
+              </div>
+            </motion.div>
+
+            {/* Card 2: sigdi 13.png */}
+            <motion.div 
+              className="restaurant-ambiance-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              whileHover={{ y: -8 }}
+            >
+              <div className="restaurant-ambiance-img-wrap">
+                <img src="/hero/sigdi 13.png" alt="Open Air Garden Seating" />
+              </div>
+            </motion.div>
+
+            {/* Card 3: sigdi 14.png */}
+            <motion.div 
+              className="restaurant-ambiance-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ y: -8 }}
+            >
+              <div className="restaurant-ambiance-img-wrap">
+                <img src="/hero/sigdi 14.png" alt="Royal Dining Feast" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. SECTION: "RESERVE YOUR TABLE" Floating White Card matching Contact Page */}
       <section className="umami-reserve-section">
         <div className="umami-reserve-backdrop-scrim" />
         <div className="container umami-reserve-content">

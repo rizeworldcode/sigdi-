@@ -1,7 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCrown, FaBriefcase, FaBed, FaUtensils, FaLayerGroup } from 'react-icons/fa6';
 import { FiCheckCircle } from 'react-icons/fi';
+
+/* Auto-cycling Image Slider Component for Service Cards */
+function CardImageSlider({ images, title, badge, stats, interval = 3600 }) {
+  const imageList = Array.isArray(images) && images.length > 0 ? images : ['/hero/sigdi 1.png'];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (imageList.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % imageList.length);
+    }, interval);
+    return () => clearInterval(timer);
+  }, [imageList.length, interval]);
+
+  return (
+    <div className="couture-image-holder">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={imageList[currentIndex]}
+          alt={`${title} - view ${currentIndex + 1}`}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="couture-slider-img"
+        />
+      </AnimatePresence>
+
+      {/* Badges */}
+      {badge && <div className="couture-badge-tag">{badge}</div>}
+      {stats && <div className="couture-stat-pill">{stats}</div>}
+
+      {/* Slide Indicators / Dots */}
+      {imageList.length > 1 && (
+        <div className="couture-slider-dots">
+          {imageList.map((_, dotIdx) => (
+            <button
+              key={dotIdx}
+              type="button"
+              className={`slider-dot ${dotIdx === currentIndex ? 'active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(dotIdx);
+              }}
+              aria-label={`Switch to slide ${dotIdx + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ServicesPage({ onOpenBooking, onNavigate }) {
   const [activeTab, setActiveTab] = useState('all');
@@ -12,7 +65,11 @@ export default function ServicesPage({ onOpenBooking, onNavigate }) {
       category: 'weddings',
       title: 'Royal Weddings & Ring Ceremonies',
       tagline: 'Say "I Do" in Style 💍 | @rizeworld Managed',
-      image: '/hero/sigdi 2.png',
+      images: [
+        '/hero/sigdi 1.png',
+        '/hero/sigdi 6.png',
+        '/hero/sigdi 8.png'
+      ],
       badge: 'Bespoke Romance',
       stats: '350+ Celebrations Hosted',
       description: 'Step through our signature illuminated arch tunnel walkway into expansive manicured celebration lawns. From regal floral mandaps and royal velvet sofa stages to dazzling varmala platforms and fairy-light canopies, we bring your dream wedding celebration to life in Alwar.',
@@ -29,7 +86,11 @@ export default function ServicesPage({ onOpenBooking, onNavigate }) {
       category: 'corporate',
       title: 'Corporate Events & Celebration Galas',
       tagline: 'Executive Meets, Conferences & High-Energy DJ Lawns',
-      image: '/hero/sigdi 3.png',
+      images: [
+        '/hero/sigdi 3.png',
+        '/hero/sigdi 9.png',
+        '/hero/sigdi 11.png'
+      ],
       badge: 'Corporate Excellence',
       stats: '180+ Events Hosted',
       description: 'Host memorable corporate annual meets, dealer conventions, executive seminars, and milestone anniversary parties. Featuring state-of-the-art acoustics, stage illumination, cocktail lawns, and gourmet culinary hospitality managed seamlessly.',
@@ -46,7 +107,11 @@ export default function ServicesPage({ onOpenBooking, onNavigate }) {
       category: 'stay',
       title: 'Deluxe AC Resort Accommodations',
       tagline: 'Double AC Rooms from ₹965 - ₹1,263/night',
-      image: '/hero/room 1.png',
+      images: [
+        '/hero/room 3.png',
+        '/hero/room 4.png',
+        '/hero/room 5.png'
+      ],
       badge: '4.1 ★ Google Rating',
       stats: '52+ Verified Reviews',
       description: 'Experience restful comfort in our well-appointed Deluxe AC Rooms. Designed for wedding guests, business travelers, and weekend vacationers with double air conditioning, plush king beds, elegant wall decor, and 24/7 room hospitality.',
@@ -63,7 +128,11 @@ export default function ServicesPage({ onOpenBooking, onNavigate }) {
       category: 'dining',
       title: 'Live Sigdi Hearth Dining & Banqueting',
       tagline: 'Charcoal Grills, Royal Tandoor & Authentic Flavors',
-      image: '/hero/sigdi 7.png',
+      images: [
+        '/hero/segdi 4.png',
+        '/hero/sigdi 5.png',
+        '/hero/sigdi 10.png'
+      ],
       badge: 'Signature Flavors',
       stats: 'Authentic Sigdi Cuisine',
       description: 'Our culinary artistry centers around the traditional Sigdi charcoal hearth. Enjoy sizzling tandoori kebabs, authentic Rajasthani delicacies, aromatic North Indian curries, and live chaat and sweet stations served with warm Rajasthani hospitality.',
@@ -220,11 +289,12 @@ export default function ServicesPage({ onOpenBooking, onNavigate }) {
                 transition={{ duration: 0.55 }}
               >
                 <div className="couture-card-media">
-                  <div className="couture-image-holder">
-                    <img src={service.image} alt={service.title} />
-                    <div className="couture-badge-tag">{service.badge}</div>
-                    <div className="couture-stat-pill">{service.stats}</div>
-                  </div>
+                  <CardImageSlider
+                    images={service.images || [service.image]}
+                    title={service.title}
+                    badge={service.badge}
+                    stats={service.stats}
+                  />
                 </div>
 
                 <div className="couture-card-body">

@@ -33,7 +33,7 @@ const igImages = [
   { src: '/hero/sigdi 1.png', alt: 'Luxury floral celebration 1', likes: '1.4k' },
   { src: '/hero/sigdi 2.png', alt: 'Royal wedding floral ceremony 2', likes: '2.8k' },
   { src: '/hero/sigdi 3.png', alt: 'Birthday and party floral setup 3', likes: '3.1k' },
-  { src: '/hero/sigdi 4.png', alt: 'Grand botanical floral installation 4', likes: '980' },
+  { src: '/hero/segdi 4.png', alt: 'Grand botanical floral installation 4', likes: '980' },
   { src: '/hero/sigdi 5.png', alt: 'Opulent wedding reception decor 5', likes: '2.2k' },
   { src: '/hero/sigdi 7.png', alt: 'Luxury evening event gala 7', likes: '1.9k' }
 ];

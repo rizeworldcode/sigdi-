@@ -9,6 +9,7 @@ import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
 import RestaurantPage from './pages/RestaurantPage';
 import ContactPage from './pages/ContactPage';
+import GalleryPage from './pages/GalleryPage';
 import './components/components.css';
 
 export default function App() {
@@ -16,14 +17,14 @@ export default function App() {
   const lenisRef = useRef(null);
 
   const getPageFromUrl = () => {
-    // Check clean pathname first (e.g. /services, /about, /restaurant, /contact)
+    // Check clean pathname first (e.g. /services, /about, /gallery, /restaurant, /contact)
     const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
-    if (['services', 'about', 'restaurant', 'contact'].includes(pathname)) {
+    if (['services', 'about', 'gallery', 'restaurant', 'contact'].includes(pathname)) {
       return pathname;
     }
-    // Backward compatibility: If URL has a legacy hash (#services), clean it up
+    // Backward compatibility: If URL has a legacy hash (#services, #gallery), clean it up
     const hash = window.location.hash.replace('#', '').trim().toLowerCase();
-    if (['services', 'about', 'restaurant', 'contact'].includes(hash)) {
+    if (['services', 'about', 'gallery', 'restaurant', 'contact'].includes(hash)) {
       window.history.replaceState(null, '', `/${hash}`);
       return hash;
     }
@@ -41,7 +42,7 @@ export default function App() {
     // Clean up any stray hash in address bar immediately
     if (window.location.hash) {
       const cleanHash = window.location.hash.replace('#', '').trim().toLowerCase();
-      const targetPath = ['services', 'about', 'restaurant', 'contact'].includes(cleanHash) ? `/${cleanHash}` : '/';
+      const targetPath = ['services', 'about', 'gallery', 'restaurant', 'contact'].includes(cleanHash) ? `/${cleanHash}` : '/';
       window.history.replaceState(null, '', targetPath);
     }
 
@@ -126,6 +127,13 @@ export default function App() {
 
       {currentPage === 'about' && (
         <AboutPage 
+          onOpenBooking={handleOpenBooking} 
+          onNavigate={handleNavigate} 
+        />
+      )}
+
+      {currentPage === 'gallery' && (
+        <GalleryPage 
           onOpenBooking={handleOpenBooking} 
           onNavigate={handleNavigate} 
         />
