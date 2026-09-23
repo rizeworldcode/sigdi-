@@ -1,0 +1,213 @@
+@import url('https://fonts.cdnfonts.com/css/coolvetica');
+
+@font-face {
+  font-family: "Apfel Grotezk";
+  src: url("/fonts/apfel-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Apfel Grotezk";
+  src: url("/fonts/apfel-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-pink: #ffffff;
+  --color-pink-accent: #ffffff;
+  --color-pink-soft: #181818;
+  --color-pink-badge: #262626;
+  --color-dark: #ffffff;
+  --color-dark-light: #e0e0e0;
+  --color-muted: #aaaaaa;
+  --color-light-gray: #141414;
+  --color-border-pink: #ffffff;
+  --color-border-subtle: rgba(255, 255, 255, 0.15);
+  --color-white: #080808;
+
+  --font-main: "Apfel Grotezk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Coolvetica", "Anton", sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #050505;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: #050505;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: clip;
+  letter-spacing: 0.01em;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container & Layout */
+.container {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+/* Typography Utilities */
+.tag-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  font-weight: 500;
+}
+
+.highlight-pink {
+  color: var(--color-pink-accent);
+}
+
+/* Section Header Styles */
+.section-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-border-pink);
+  padding-bottom: 12px;
+  margin-bottom: 40px;
+}
+
+.section-num {
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--color-pink-accent);
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: var(--color-white);
+  color: var(--color-dark);
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s var(--ease-spring);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.btn-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-pink-accent);
+  color: var(--color-white);
+  border-color: var(--color-pink-accent);
+}
+
+.btn-pill-pink {
+  background-color: var(--color-pink-accent);
+  color: var(--color-white);
+  border: none;
+}
+
+.btn-pill-pink:hover {
+  background-color: #222222;
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+.animate-float {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-pulse {
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
