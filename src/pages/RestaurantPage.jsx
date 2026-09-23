@@ -57,7 +57,7 @@ _Sent via Sigdi Resort Website Restaurant Form_`;
   return (
     <div className="page-view umami-contact-page restaurant-lounge-page">
       {/* 1. HERO BANNER: "CHARCOAL HEARTH & DINING" with Scalloped Bottom Divider */}
-      <section className="umami-hero-section" style={{ backgroundImage: "url('/hero/sigdi 8.png')" }}>
+      <section className="umami-hero-section" style={{ backgroundImage: "url('/hero/sigdi 14.png')" }}>
         <div className="umami-hero-overlay" />
         <div className="umami-hero-inner">
           <motion.h1

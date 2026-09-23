@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Maximize2, Sparkles, Camera } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Maximize2, Sparkles } from 'lucide-react';
 import AnimatedScrollGallery from '../components/AnimatedScrollGallery';
 
-// User's Curated Gallery Images
+// User's 9 Unique Curated Gallery Images
 const initialGalleryImages = [
   {
     id: 1,
     title: 'Grand Sigdi Celebration',
     category: 'Celebrations',
     image: '/hero/gallery 1.png',
-    span: 'normal',
     description: 'Bespoke event decor and royal celebration lawn ambience.'
   },
   {
@@ -18,7 +17,6 @@ const initialGalleryImages = [
     title: 'Festive Illumination & Decor',
     category: 'Decor',
     image: '/hero/gallery 2.png',
-    span: 'normal',
     description: 'Enchanting floral installations and celebratory setup.'
   },
   {
@@ -26,7 +24,6 @@ const initialGalleryImages = [
     title: 'Heritage Courtyard & Stage',
     category: 'Celebrations',
     image: '/hero/gallery 3.png',
-    span: 'normal',
     description: 'Palatial stage backdrop and ceremonial seating.'
   },
   {
@@ -34,7 +31,6 @@ const initialGalleryImages = [
     title: 'Resort Lawns & Lighting',
     category: 'Resort',
     image: '/hero/gallery 4.png',
-    span: 'normal',
     description: 'Vibrant evening celebrations and luminous night ambience.'
   },
   {
@@ -42,22 +38,49 @@ const initialGalleryImages = [
     title: 'Royal Ambiance & Hospitality',
     category: 'Resort',
     image: '/hero/gallery 5.png',
-    span: 'normal',
     description: 'Warm Rajasthani hospitality and cherished guest memories.'
+  },
+  {
+    id: 6,
+    title: 'Palatial Garden Walkways',
+    category: 'Resort',
+    image: '/hero/sigdi 2.png',
+    description: 'Picturesque landscaped pathways surrounded by flora.'
+  },
+  {
+    id: 7,
+    title: 'Royal Nuptial Celebration',
+    category: 'Celebrations',
+    image: '/hero/sigdi 6.png',
+    description: 'Grand celebration lawn catering royal weddings.'
+  },
+  {
+    id: 8,
+    title: 'Live Hearth Dining Experience',
+    category: 'Dining',
+    image: '/hero/sigdi 12.png',
+    description: 'Signature live charcoal hearth feast under the stars.'
+  },
+  {
+    id: 9,
+    title: 'Open-Air Evening Canopy',
+    category: 'Dining',
+    image: '/hero/sigdi 13.png',
+    description: 'Serene alfresco dining under warm ambient canopies.'
   }
 ];
 
-// 9-tile layout for the Framer Animated 3x3 expansion (with gallery 1.png as the focal expanding center tile)
+// Exactly 9 Unique Tiles for the 3x3 Animated Grid
 const scrollGalleryImages = [
-  initialGalleryImages[1], // Tile 0: gallery 2
-  initialGalleryImages[2], // Tile 1: gallery 3
-  initialGalleryImages[3], // Tile 2: gallery 4
-  initialGalleryImages[4], // Tile 3: gallery 5
-  initialGalleryImages[0], // Tile 4 (CENTER HERO): gallery 1 (Expands to full screen!)
-  initialGalleryImages[1], // Tile 5: gallery 2
-  initialGalleryImages[2], // Tile 6: gallery 3
-  initialGalleryImages[3], // Tile 7: gallery 4
-  initialGalleryImages[4]  // Tile 8: gallery 5
+  initialGalleryImages[1], // Tile 0: gallery 2.png
+  initialGalleryImages[2], // Tile 1: gallery 3.png
+  initialGalleryImages[3], // Tile 2: gallery 4.png
+  initialGalleryImages[5], // Tile 3: sigdi 2.png
+  initialGalleryImages[0], // Tile 4 (CENTER HERO): gallery 1.png
+  initialGalleryImages[6], // Tile 5: sigdi 6.png
+  initialGalleryImages[4], // Tile 6: gallery 5.png
+  initialGalleryImages[7], // Tile 7: sigdi 12.png
+  initialGalleryImages[8]  // Tile 8: sigdi 13.png
 ];
 
 export default function GalleryPage({ onOpenBooking, onNavigate }) {
@@ -93,15 +116,6 @@ export default function GalleryPage({ onOpenBooking, onNavigate }) {
       <section className="umami-hero-section" style={{ backgroundImage: "url('/hero/gallery 1.png')" }}>
         <div className="umami-hero-overlay" />
         <div className="umami-hero-inner">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="gallery-hero-badge"
-          >
-            <Camera size={16} />
-            <span>VISUAL PORTFOLIO</span>
-          </motion.div>
 
           <motion.h1 
             className="umami-hero-title"

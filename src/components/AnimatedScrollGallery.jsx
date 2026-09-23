@@ -1,14 +1,15 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ChevronDown, Sparkles, Maximize2 } from 'lucide-react';
+import { motion, useScroll } from 'framer-motion';
 
 /**
- * AnimatedScrollGallery - Inspired by Framer AnimatedGallery component
- * https://framer.com/m/AnimatedGallery-4x7qJS.js
+ * AnimatedScrollGallery - Interactive Dynamic Focal Scroll Gallery
+ * Inspired by Framer AnimatedGallery component (https://framer.com/m/AnimatedGallery-4x7qJS.js)
  * 
- * Creates a pinned 3x3 interactive scroll gallery where scrolling spreads
- * the surrounding 8 images away and smoothly expands the center focal image
- * to fill the entire screen.
+ * Features:
+ * - Pinned 3x3 interactive scroll gallery
+ * - Whichever tile the user clicks becomes the active focal image
+ * - As the user scrolls, THAT selected image smoothly expands to 100% full screen
+ * - The remaining 8 images spread away in 3D and fade out
  */
 export default function AnimatedScrollGallery({
   images = [],
@@ -21,6 +22,9 @@ export default function AnimatedScrollGallery({
 }) {
   const wrapperRef = useRef(null);
   const gridRef = useRef(null);
+
+  // Active focal image index (default is 4, the center tile)
+  const [activeFocalIndex, setActiveFocalIndex] = useState(4);
 
   // Track scroll progress along the pinned container
   const { scrollYProgress } = useScroll({
@@ -75,7 +79,6 @@ export default function AnimatedScrollGallery({
   const renderImages = useMemo(() => {
     if (!images || images.length === 0) return [];
     if (images.length === 9) return images;
-    // Repeat/wrap user images cleanly to fill 9 cells
     const list = [];
     for (let i = 0; i < 9; i++) {
       list.push(images[i % images.length]);
@@ -83,9 +86,10 @@ export default function AnimatedScrollGallery({
     return list;
   }, [images]);
 
-  const centerIndex = useMemo(() => Math.floor(renderImages.length / 2), [renderImages.length]);
-  const centerRow = useMemo(() => Math.floor(centerIndex / 3), [centerIndex]);
-  const centerCol = useMemo(() => centerIndex % 3, [centerIndex]);
+  // Coordinates of the active focal image
+  const focalIndex = Math.min(renderImages.length - 1, Math.max(0, activeFocalIndex));
+  const focalRow = Math.floor(focalIndex / 3);
+  const focalCol = focalIndex % 3;
 
   const clampedProgress = Math.max(0, Math.min(1, progress));
 
@@ -95,14 +99,15 @@ export default function AnimatedScrollGallery({
     return 1 - Math.pow(-2 * clampedProgress + 2, 3) / 2;
   }, [clampedProgress]);
 
-  // Calculate position & scale for outer 8 images
+  // Calculate position & scale for outer 8 images relative to focal position
   const getImageStyle = useCallback((index) => {
     const row = Math.floor(index / 3);
     const col = index % 3;
-    const deltaRow = row - centerRow;
-    const deltaCol = col - centerCol;
+    const deltaRow = row - focalRow;
+    const deltaCol = col - focalCol;
 
-    if (index === centerIndex) {
+    // The active focal image is rendered by the expanding overlay
+    if (index === focalIndex) {
       return { opacity: 0, zIndex: 1, pointerEvents: 'none' };
     }
 
@@ -129,14 +134,14 @@ export default function AnimatedScrollGallery({
       zIndex: 10,
       cursor: 'pointer'
     };
-  }, [animationProgress, centerCol, centerIndex, centerRow, gap, gridMetrics]);
+  }, [animationProgress, focalCol, focalIndex, focalRow, gap, gridMetrics]);
 
-  // Center expanding image frame
-  const centerOverlayStyle = useMemo(() => {
+  // Expanding focal overlay style (starts from clicked tile position and expands to fill screen)
+  const focalOverlayStyle = useMemo(() => {
     if (renderImages.length === 0) return { display: 'none' };
 
-    const startLeft = centerCol * (gridMetrics.cellWidth + gap);
-    const startTop = centerRow * (gridMetrics.cellHeight + gap);
+    const startLeft = focalCol * (gridMetrics.cellWidth + gap);
+    const startTop = focalRow * (gridMetrics.cellHeight + gap);
     const startWidth = gridMetrics.cellWidth;
     const startHeight = gridMetrics.cellHeight;
 
@@ -160,13 +165,19 @@ export default function AnimatedScrollGallery({
       overflow: 'hidden',
       zIndex: 40,
       opacity: 1,
-      boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9)'
+      boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9)',
+      cursor: clampedProgress > 0.8 ? 'pointer' : 'default',
+      transition: 'box-shadow 0.3s ease'
     };
-  }, [animationProgress, centerCol, centerRow, gap, gridMetrics, radius, renderImages.length]);
+  }, [animationProgress, clampedProgress, focalCol, focalRow, gap, gridMetrics, radius, renderImages.length]);
 
-  const centerImage = renderImages[centerIndex];
-  const overlayLeft = centerOverlayStyle.left || 0;
-  const overlayTop = centerOverlayStyle.top || 0;
+  const focalImage = renderImages[focalIndex];
+  const overlayLeft = focalOverlayStyle.left || 0;
+  const overlayTop = focalOverlayStyle.top || 0;
+
+  const handleTileClick = (index) => {
+    setActiveFocalIndex(index);
+  };
 
   return (
     <div 
@@ -195,8 +206,6 @@ export default function AnimatedScrollGallery({
           justifyContent: 'center'
         }}
       >
-
-
         {/* 3x3 Grid Stage */}
         <div
           ref={gridRef}
@@ -210,7 +219,7 @@ export default function AnimatedScrollGallery({
             gap: `${gap}px`
           }}
         >
-          {/* 8 Outer Transforming Images */}
+          {/* 8 Outer Transforming Tiles */}
           {renderImages.map((image, index) => (
             <motion.div
               key={`grid-tile-${index}`}
@@ -224,7 +233,8 @@ export default function AnimatedScrollGallery({
                 border: '1px solid rgba(255,255,255,0.08)',
                 ...getImageStyle(index)
               }}
-              onClick={() => onSelectImage && onSelectImage(image)}
+              onClick={() => handleTileClick(index)}
+              title="Click to select this image to expand"
             >
               <img
                 src={image.image || image.src}
@@ -242,15 +252,19 @@ export default function AnimatedScrollGallery({
             </motion.div>
           ))}
 
-          {/* Center Expanding Hero Image */}
-          {centerImage && (
+          {/* Active Focal Expanding Image */}
+          {focalImage && (
             <motion.div 
-              style={centerOverlayStyle}
-              onClick={() => onSelectImage && onSelectImage(centerImage)}
+              style={focalOverlayStyle}
+              onClick={() => {
+                if (clampedProgress > 0.75 && onSelectImage) {
+                  onSelectImage(focalImage);
+                }
+              }}
             >
               <img
-                src={centerImage.image || centerImage.src}
-                alt={centerImage.title || 'Featured Sigdi Photo'}
+                src={focalImage.image || focalImage.src}
+                alt={focalImage.title || 'Selected Sigdi Photo'}
                 style={{
                   position: 'absolute',
                   left: -overlayLeft,
@@ -262,7 +276,21 @@ export default function AnimatedScrollGallery({
                 }}
               />
 
-              {/* Fullscreen Overlay Tag when Expanded */}
+              {/* Active selection glowing frame before expansion */}
+              {clampedProgress < 0.25 && (
+                <div 
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: `${radius}px`,
+                    border: '2px solid rgba(255, 255, 255, 0.9)',
+                    boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.25), 0 0 25px rgba(255, 255, 255, 0.25)',
+                    pointerEvents: 'none'
+                  }}
+                />
+              )}
+
+              {/* Fullscreen Overlay Caption when Expanded */}
               <motion.div 
                 className="center-expanded-caption"
                 style={{
@@ -271,8 +299,8 @@ export default function AnimatedScrollGallery({
                 }}
               >
                 <span className="expanded-badge">SIGDI RESORT ALWAR</span>
-                <h2>{centerImage.title || 'Grand Celebration Atmosphere'}</h2>
-                <p>{centerImage.description || 'Experience royal hospitality and unforgettable moments.'}</p>
+                <h2>{focalImage.title || 'Grand Celebration Atmosphere'}</h2>
+                <p>{focalImage.description || 'Experience royal hospitality and unforgettable moments.'}</p>
               </motion.div>
             </motion.div>
           )}

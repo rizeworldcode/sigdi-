@@ -2,7 +2,7 @@
    SIGDI RESORT & DINING DESIGN SYSTEM
    ========================================================================== */
 
-/* --- Top Sticky Navbar (Pure Glass Transparent) --- */
+/* --- Top Sticky Navbar (100% Clean Seamless Transparent) --- */
 .navbar-wrapper {
   position: fixed;
   top: 0;
@@ -10,20 +10,21 @@
   width: 100%;
   z-index: 100;
   transition: all 0.35s ease;
-  padding: 10px 0;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: none;
+  box-shadow: none;
 }
 
 .navbar-wrapper.scrolled {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 10px 0;
+  border-bottom: none;
+  box-shadow: none;
 }
 
 .navbar-container {
@@ -38,28 +39,65 @@
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 34px;
   flex: 1;
 }
 
 .nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  transition: color 0.2s ease, opacity 0.2s ease;
-  padding: 4px 0;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.85);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 2px;
+  text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Elegant Center-Expanding Underline Beam */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #ffffff, rgba(255, 255, 255, 0.2));
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+  transform: scaleX(0);
+  transform-origin: center;
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  pointer-events: none;
 }
 
 .navbar-wrapper.scrolled .nav-link {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .nav-link:hover {
   color: #ffffff;
   opacity: 1;
-  text-decoration: underline;
-  text-underline-offset: 6px;
+  transform: translateY(-2.5px);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.75), 0 0 30px rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.nav-link:active {
+  transform: translateY(0) scale(0.96);
 }
 
 .brand-logo {
@@ -78,9 +116,9 @@
 }
 
 .navbar-brand-logo-img {
-  height: 50px;
+  height: 82px;
   width: auto;
-  max-width: 200px;
+  max-width: 290px;
   object-fit: contain;
   transition: transform 0.25s ease, filter 0.25s ease, height 0.3s ease;
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
@@ -92,13 +130,13 @@
 }
 
 .navbar-wrapper.scrolled .navbar-brand-logo-img {
-  height: 42px;
+  height: 66px;
 }
 
 @media (max-width: 768px) {
   .navbar-brand-logo-img {
-    height: 42px;
-    max-width: 170px;
+    height: 64px;
+    max-width: 230px;
   }
 }
 
@@ -128,30 +166,52 @@
 }
 
 .nav-contact-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.88);
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   background: transparent;
   border: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 4px 0;
+  padding: 6px 2px;
+  text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              text-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-contact-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #ffffff, rgba(255, 255, 255, 0.2));
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+  transform: scaleX(0);
+  transform-origin: center;
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  pointer-events: none;
 }
 
 .contact-arrow {
+  display: inline-block;
   font-size: 17px;
   line-height: 1;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-wrapper.scrolled .nav-contact-link {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.9);
   background: transparent;
   border: none;
 }
@@ -161,12 +221,22 @@
   color: #ffffff;
   border: none;
   box-shadow: none;
-  text-decoration: underline;
-  text-underline-offset: 6px;
+  transform: translateY(-2.5px);
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.75), 0 0 30px rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+}
+
+.nav-contact-link:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 .nav-contact-link:hover .contact-arrow {
-  transform: translateX(3px);
+  transform: translateX(6px) scale(1.15);
+}
+
+.nav-contact-link:active {
+  transform: translateY(0) scale(0.96);
 }
 
 /* Mobile Nav Toggle */
@@ -202,8 +272,8 @@
     padding: 0 16px;
   }
   .navbar-brand-logo-img {
-    height: 38px !important;
-    max-width: 150px;
+    height: 54px !important;
+    max-width: 190px;
   }
 }
 
@@ -2776,25 +2846,28 @@
    NAVBAR ACTIVE INDICATORS & MULTI-PAGE VIEW SYSTEM
    ======================================================== */
 .nav-link.active {
-  color: var(--color-pink) !important;
-  position: relative;
+  color: #ffffff !important;
   font-weight: 600;
 }
 
 .nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 10%;
-  width: 80%;
+  transform: scaleX(1);
+  opacity: 1;
   height: 2px;
   background: #ffffff;
-  border-radius: 999px;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
 }
 
 .nav-contact-link.active {
   color: #ffffff !important;
+}
+
+.nav-contact-link.active::after {
+  transform: scaleX(1);
+  opacity: 1;
+  height: 2px;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
 }
 
 .mobile-dropdown a.active-mobile {
@@ -3079,8 +3152,8 @@
 
 .slider-dot.active {
   width: 18px;
-  background: linear-gradient(135deg, #e0567e 0%, #b83359 100%);
-  box-shadow: 0 0 10px rgba(224, 86, 126, 0.8);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
 .couture-tagline {
@@ -5826,8 +5899,8 @@
 
 .gallery-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(224, 86, 126, 0.4);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(224, 86, 126, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 255, 255, 0.12);
 }
 
 .gallery-card-inner {
@@ -6171,8 +6244,8 @@
 
 .restaurant-ambiance-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(224, 86, 126, 0.4);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 25px rgba(224, 86, 126, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 255, 255, 0.12);
 }
 
 .restaurant-ambiance-img-wrap {
@@ -6296,13 +6369,13 @@
   background: rgba(18, 18, 18, 0.78);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(224, 86, 126, 0.35);
-  color: #f7a8be;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(224, 86, 126, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .bounce-arrow {
@@ -6390,9 +6463,9 @@
 
 .gallery-progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #e0567e, #ff8ba7);
+  background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.65));
   transition: width 0.1s linear;
-  box-shadow: 0 0 10px rgba(224, 86, 126, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {
