@@ -597,48 +597,6 @@
   pointer-events: none;
 }
 
-.hero-slide-indicators {
-  position: absolute;
-  bottom: 28px;
-  right: 32px;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 6px 12px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.hero-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.4);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero-dot.active {
-  width: 24px;
-  background: #f7a8b8;
-  box-shadow: 0 0 10px rgba(247, 168, 184, 0.6);
-}
-
-@media (max-width: 600px) {
-  .hero-slide-indicators {
-    bottom: 16px;
-    right: 16px;
-    padding: 4px 8px;
-    gap: 6px;
-  }
-}
-
 .hero-content {
   position: relative;
   z-index: 10;
