@@ -1,7 +1,36 @@
-import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
-export default function Hero({ onOpenBooking }) {
+// List of hero background images that rotate automatically
+export const HERO_IMAGES = [
+  '/hero/hero 5.png',
+  '/hero/hero 1.png',
+  '/hero/hero 2.png',
+  '/hero/hero 3.png',
+  '/hero/hero 4.png',
+];
+
+export default function Hero({ onOpenBooking, images = HERO_IMAGES, intervalTime = 5000 }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const activeImages = images && images.length > 0 ? images : HERO_IMAGES;
+
+  // Preload all slides in advance for instant buttery-smooth transitions
+  useEffect(() => {
+    activeImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [activeImages]);
+
+  useEffect(() => {
+    if (activeImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % activeImages.length);
+    }, intervalTime);
+
+    return () => clearInterval(interval);
+  }, [activeImages.length, intervalTime]);
+
   const { scrollY } = useScroll();
 
   // Scroll parallax effects matching Framer template
@@ -13,15 +42,27 @@ export default function Hero({ onOpenBooking }) {
   return (
     <section className="hero-section">
       <div className="hero-background-wrapper">
-        <motion.img
-          src="/images/hero.png"
-          alt="Sigdi Resort Alwar - Say I Do In Style"
-          className="hero-image"
-          style={{ y: yBg, scale: scaleBg }}
-          initial={{ scale: 1.15, opacity: 0.8 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
-        />
+        <AnimatePresence mode="sync">
+          <motion.img
+            key={activeImages[currentIndex]}
+            src={activeImages[currentIndex]}
+            alt={`Sigdi Resort Alwar - Slide ${currentIndex + 1}`}
+            className="hero-image"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              y: yBg
+            }}
+            initial={{ opacity: 0, scale: 1.06 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.4, ease: [0.25, 1, 0.5, 1] }}
+          />
+        </AnimatePresence>
         <div className="hero-overlay"></div>
         <div className="hero-bottom-fade"></div>
       </div>
