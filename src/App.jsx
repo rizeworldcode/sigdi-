@@ -3,7 +3,6 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import BookingModal from './components/BookingModal';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import AboutPage from './pages/AboutPage';
@@ -14,7 +13,6 @@ import FloatingContactButtons from './components/FloatingContactButtons';
 import './components/components.css';
 
 export default function App() {
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const lenisRef = useRef(null);
 
   const getPageFromUrl = () => {
@@ -102,11 +100,7 @@ export default function App() {
   };
 
   const handleOpenBooking = () => {
-    setIsBookingOpen(true);
-  };
-
-  const handleCloseBooking = () => {
-    setIsBookingOpen(false);
+    handleNavigate('contact');
   };
 
   return (
@@ -163,12 +157,6 @@ export default function App() {
       <Footer 
         onOpenBooking={handleOpenBooking} 
         onNavigate={handleNavigate} 
-      />
-
-      {/* Consultation Booking Modal */}
-      <BookingModal 
-        isOpen={isBookingOpen} 
-        onClose={handleCloseBooking} 
       />
 
       {/* Floating Direct Call & WhatsApp Contact Actions */}
