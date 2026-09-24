@@ -116,27 +116,27 @@
 }
 
 .navbar-brand-logo-img {
-  height: 82px;
+  height: 115px;
   width: auto;
-  max-width: 290px;
+  max-width: 380px;
   object-fit: contain;
   transition: transform 0.25s ease, filter 0.25s ease, height 0.3s ease;
-  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.6));
 }
 
 .navbar-brand-logo-img:hover {
   transform: scale(1.05);
-  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.7));
 }
 
 .navbar-wrapper.scrolled .navbar-brand-logo-img {
-  height: 66px;
+  height: 85px;
 }
 
 @media (max-width: 768px) {
   .navbar-brand-logo-img {
-    height: 64px;
-    max-width: 230px;
+    height: 85px;
+    max-width: 290px;
   }
 }
 
@@ -272,8 +272,8 @@
     padding: 0 16px;
   }
   .navbar-brand-logo-img {
-    height: 54px !important;
-    max-width: 190px;
+    height: 72px !important;
+    max-width: 240px;
   }
 }
 
@@ -6171,9 +6171,15 @@
 }
 
 .lightbox-caption-title {
-  font-size: 1.3rem;
+  font-family: 'Coolvetica', 'Anton', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   margin: 0 0 6px 0;
   color: #ffffff;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0;
 }
 
 .lightbox-caption-text {
@@ -6403,10 +6409,12 @@
 }
 
 .grid-tile-label {
+  font-family: var(--font-main, sans-serif);
   font-size: 13px;
   font-weight: 600;
   color: #ffffff;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .center-expanded-caption {
@@ -6437,11 +6445,16 @@
 }
 
 .center-expanded-caption h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-family: 'Coolvetica', 'Anton', sans-serif;
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+  font-weight: 400;
   color: #ffffff;
   margin: 0 0 6px 0;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0;
 }
 
 .center-expanded-caption p {
@@ -6489,9 +6502,138 @@
     font-size: 0.85rem;
   }
 }
+/* ==========================================================================
+   Floating Quick Action Contact Buttons (Call & WhatsApp)
+   ========================================================================== */
+.floating-actions-container {
+  position: fixed;
+  bottom: 30px;
+  right: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 9998;
+  pointer-events: auto;
+}
 
+.floating-action-btn {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
 
+/* Call Button Styling */
+.floating-call-btn {
+  background: linear-gradient(135deg, #e0567e 0%, #b83359 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
 
+.floating-call-btn:hover {
+  box-shadow: 0 12px 30px rgba(224, 86, 126, 0.55), 0 0 20px rgba(224, 86, 126, 0.35);
+}
 
+/* WhatsApp Button Styling */
+.floating-whatsapp-btn {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.floating-whatsapp-btn:hover {
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.55), 0 0 20px rgba(37, 211, 102, 0.35);
+}
+
+.floating-btn-icon {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+/* Ambient Pulse Ring Animation */
+.floating-btn-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(224, 86, 126, 0.5);
+  animation: floatingPulseRing 2.4s cubic-bezier(0.25, 0, 0, 1) infinite;
+  pointer-events: none;
+}
+
+.floating-btn-pulse.pulse-wa {
+  border-color: rgba(37, 211, 102, 0.55);
+  animation-delay: 1.2s;
+}
+
+@keyframes floatingPulseRing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Tooltip on Hover */
+.floating-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(12, 12, 12, 0.92);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.floating-action-btn:hover .floating-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+/* Responsive adjustment for Mobile (stays cleanly above the mobile bottom dock) */
+@media (max-width: 900px) {
+  .floating-actions-container {
+    bottom: 96px;
+    right: 18px;
+    gap: 12px;
+  }
+
+  .floating-action-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .floating-tooltip {
+    display: none;
+  }
+}
 
 

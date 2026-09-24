@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Home, LayoutGrid, Info, UtensilsCrossed, User, Images } from 'lucide-react';
+import { Menu, X, LayoutGrid, Info, UtensilsCrossed, User, Images } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate }) {
@@ -162,22 +162,6 @@ export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate
       {/* Floating Responsive Mobile Bottom Dock (Human-Crafted Luxury Design) */}
       <div className="mobile-bottom-dock-wrapper">
         <nav className="mobile-bottom-dock" aria-label="Mobile Navigation">
-          {/* 1. Home */}
-          <button
-            type="button"
-            className={`dock-item ${currentPage === 'home' ? 'active' : ''}`}
-            onClick={(e) => handleNavClick(e, 'home')}
-            aria-label="Home"
-          >
-            <span className="dock-icon">
-              <Home 
-                size={20} 
-                fill={currentPage === 'home' ? 'currentColor' : 'none'} 
-                strokeWidth={currentPage === 'home' ? 1.5 : 1.7} 
-              />
-            </span>
-            <span className="dock-label">Home</span>
-          </button>
 
           {/* 2. Services */}
           <button

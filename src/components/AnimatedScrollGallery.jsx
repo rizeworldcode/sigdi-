@@ -3,11 +3,11 @@ import { motion, useScroll } from 'framer-motion';
 
 /**
  * AnimatedScrollGallery - Interactive Dynamic Focal Scroll Gallery
- * Inspired by Framer AnimatedGallery component (https://framer.com/m/AnimatedGallery-4x7qJS.js)
  * 
  * Features:
  * - Pinned 3x3 interactive scroll gallery
  * - Whichever tile the user clicks becomes the active focal image
+ * - The selected image is ALWAYS visible inside its card (never black) with a glowing white frame
  * - As the user scrolls, THAT selected image smoothly expands to 100% full screen
  * - The remaining 8 images spread away in 3D and fade out
  */
@@ -17,8 +17,7 @@ export default function AnimatedScrollGallery({
   padding = 32,
   radius = 20,
   pinDistance = 250, // in vh
-  backgroundColor = '#080808',
-  onSelectImage
+  backgroundColor = '#080808'
 }) {
   const wrapperRef = useRef(null);
   const gridRef = useRef(null);
@@ -47,13 +46,14 @@ export default function AnimatedScrollGallery({
     return () => unsubscribe();
   }, [scrollYProgress]);
 
-  // Responsive Grid Measurement
+  // Responsive Grid Measurement with ResizeObserver
   const measureGrid = useCallback(() => {
     const el = gridRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const nextWidth = rect.width;
     const nextHeight = rect.height;
+    if (nextWidth === 0 || nextHeight === 0) return;
     const nextCellWidth = Math.max(0, (nextWidth - 2 * gap) / 3);
     const nextCellHeight = Math.max(0, (nextHeight - 2 * gap) / 3);
 
@@ -67,9 +67,23 @@ export default function AnimatedScrollGallery({
 
   useEffect(() => {
     measureGrid();
+    const rafId = requestAnimationFrame(measureGrid);
+    const timer = setTimeout(measureGrid, 120);
+
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== 'undefined' && gridRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        measureGrid();
+      });
+      resizeObserver.observe(gridRef.current);
+    }
+
     window.addEventListener('resize', measureGrid);
     window.addEventListener('orientationchange', measureGrid);
     return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timer);
+      if (resizeObserver) resizeObserver.disconnect();
       window.removeEventListener('resize', measureGrid);
       window.removeEventListener('orientationchange', measureGrid);
     };
@@ -99,16 +113,23 @@ export default function AnimatedScrollGallery({
     return 1 - Math.pow(-2 * clampedProgress + 2, 3) / 2;
   }, [clampedProgress]);
 
-  // Calculate position & scale for outer 8 images relative to focal position
+  // Calculate position & scale for outer images relative to focal position
   const getImageStyle = useCallback((index) => {
     const row = Math.floor(index / 3);
     const col = index % 3;
     const deltaRow = row - focalRow;
     const deltaCol = col - focalCol;
 
-    // The active focal image is rendered by the expanding overlay
+    // The active focal image:
+    // When progress <= 0.08, keep it completely visible in the grid (so it's NEVER black).
+    // As it expands (progress > 0.08), the expanding overlay takes over.
     if (index === focalIndex) {
-      return { opacity: 0, zIndex: 1, pointerEvents: 'none' };
+      return {
+        transformOrigin: 'top left',
+        opacity: animationProgress > 0.08 ? 0 : 1,
+        zIndex: 1,
+        cursor: 'pointer'
+      };
     }
 
     const startLeft = col * (gridMetrics.cellWidth + gap);
@@ -132,7 +153,8 @@ export default function AnimatedScrollGallery({
       transform: `translate3d(${moveX}px, ${moveY}px, 0px) scale(${currentScaleX}, ${currentScaleY})`,
       opacity: Math.max(0, 1 - animationProgress * 1.3),
       zIndex: 10,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      pointerEvents: animationProgress > 0.75 ? 'none' : 'auto'
     };
   }, [animationProgress, focalCol, focalIndex, focalRow, gap, gridMetrics]);
 
@@ -140,10 +162,13 @@ export default function AnimatedScrollGallery({
   const focalOverlayStyle = useMemo(() => {
     if (renderImages.length === 0) return { display: 'none' };
 
-    const startLeft = focalCol * (gridMetrics.cellWidth + gap);
-    const startTop = focalRow * (gridMetrics.cellHeight + gap);
-    const startWidth = gridMetrics.cellWidth;
-    const startHeight = gridMetrics.cellHeight;
+    const safeCellWidth = gridMetrics.cellWidth || (gridMetrics.width ? (gridMetrics.width - 2 * gap) / 3 : 0);
+    const safeCellHeight = gridMetrics.cellHeight || (gridMetrics.height ? (gridMetrics.height - 2 * gap) / 3 : 0);
+
+    const startLeft = focalCol * (safeCellWidth + gap);
+    const startTop = focalRow * (safeCellHeight + gap);
+    const startWidth = safeCellWidth;
+    const startHeight = safeCellHeight;
 
     const targetLeft = 0;
     const targetTop = 0;
@@ -154,6 +179,11 @@ export default function AnimatedScrollGallery({
     const currentTop = startTop + (targetTop - startTop) * animationProgress;
     const currentWidth = startWidth + (targetWidth - startWidth) * animationProgress;
     const currentHeight = startHeight + (targetHeight - startHeight) * animationProgress;
+
+    // If gridMetrics aren't ready yet and animation hasn't started, let the grid tile show
+    if (animationProgress === 0 && (!safeCellWidth || !safeCellHeight)) {
+      return { display: 'none' };
+    }
 
     return {
       position: 'absolute',
@@ -166,14 +196,12 @@ export default function AnimatedScrollGallery({
       zIndex: 40,
       opacity: 1,
       boxShadow: '0 30px 80px rgba(0, 0, 0, 0.9)',
-      cursor: clampedProgress > 0.8 ? 'pointer' : 'default',
+      cursor: 'pointer',
       transition: 'box-shadow 0.3s ease'
     };
-  }, [animationProgress, clampedProgress, focalCol, focalRow, gap, gridMetrics, radius, renderImages.length]);
+  }, [animationProgress, focalCol, focalRow, gap, gridMetrics, radius, renderImages.length]);
 
   const focalImage = renderImages[focalIndex];
-  const overlayLeft = focalOverlayStyle.left || 0;
-  const overlayTop = focalOverlayStyle.top || 0;
 
   const handleTileClick = (index) => {
     setActiveFocalIndex(index);
@@ -219,7 +247,7 @@ export default function AnimatedScrollGallery({
             gap: `${gap}px`
           }}
         >
-          {/* 8 Outer Transforming Tiles */}
+          {/* 9 Transforming Grid Tiles */}
           {renderImages.map((image, index) => (
             <motion.div
               key={`grid-tile-${index}`}
@@ -231,10 +259,11 @@ export default function AnimatedScrollGallery({
                 overflow: 'hidden',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                 border: '1px solid rgba(255,255,255,0.08)',
+                cursor: 'pointer',
                 ...getImageStyle(index)
               }}
               onClick={() => handleTileClick(index)}
-              title="Click to select this image to expand"
+              title={image.title || `Gallery Image ${index + 1}`}
             >
               <img
                 src={image.image || image.src}
@@ -256,21 +285,15 @@ export default function AnimatedScrollGallery({
           {focalImage && (
             <motion.div 
               style={focalOverlayStyle}
-              onClick={() => {
-                if (clampedProgress > 0.75 && onSelectImage) {
-                  onSelectImage(focalImage);
-                }
-              }}
+              onClick={() => handleTileClick(focalIndex)}
+              title={focalImage.title || 'Selected Sigdi Photo'}
             >
               <img
                 src={focalImage.image || focalImage.src}
                 alt={focalImage.title || 'Selected Sigdi Photo'}
                 style={{
-                  position: 'absolute',
-                  left: -overlayLeft,
-                  top: -overlayTop,
-                  width: gridMetrics.width || '100%',
-                  height: gridMetrics.height || '100%',
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover',
                   display: 'block'
                 }}
@@ -288,6 +311,13 @@ export default function AnimatedScrollGallery({
                     pointerEvents: 'none'
                   }}
                 />
+              )}
+
+              {/* Grid tile overlay label on hover before expansion */}
+              {clampedProgress < 0.25 && (
+                <div className="grid-tile-overlay" style={{ pointerEvents: 'none' }}>
+                  <span className="grid-tile-label">{focalImage.title}</span>
+                </div>
               )}
 
               {/* Fullscreen Overlay Caption when Expanded */}

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Maximize2, Sparkles } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import AnimatedScrollGallery from '../components/AnimatedScrollGallery';
 
 // User's 9 Unique Curated Gallery Images
@@ -84,39 +83,12 @@ const scrollGalleryImages = [
 ];
 
 export default function GalleryPage({ onOpenBooking, onNavigate }) {
-  const [activeLightboxIndex, setActiveLightboxIndex] = useState(null);
-
-  const handleOpenLightbox = (index) => {
-    setActiveLightboxIndex(index);
-  };
-
-  const handleCloseLightbox = () => {
-    setActiveLightboxIndex(null);
-  };
-
-  const handleNextPhoto = (e) => {
-    e?.stopPropagation?.();
-    if (activeLightboxIndex !== null) {
-      setActiveLightboxIndex((activeLightboxIndex + 1) % initialGalleryImages.length);
-    }
-  };
-
-  const handlePrevPhoto = (e) => {
-    e?.stopPropagation?.();
-    if (activeLightboxIndex !== null) {
-      setActiveLightboxIndex(
-        (activeLightboxIndex - 1 + initialGalleryImages.length) % initialGalleryImages.length
-      );
-    }
-  };
-
   return (
     <div className="page-view gallery-page-view">
       {/* 1. HERO BANNER */}
       <section className="umami-hero-section" style={{ backgroundImage: "url('/hero/gallery 1.png')" }}>
         <div className="umami-hero-overlay" />
         <div className="umami-hero-inner">
-
           <motion.h1 
             className="umami-hero-title"
             initial={{ opacity: 0, y: 30 }}
@@ -157,81 +129,7 @@ export default function GalleryPage({ onOpenBooking, onNavigate }) {
         radius={22}
         pinDistance={260}
         backgroundColor="#080808"
-        onSelectImage={(item) => {
-          const foundIdx = initialGalleryImages.findIndex(img => img.id === item.id);
-          if (foundIdx !== -1) {
-            handleOpenLightbox(foundIdx);
-          }
-        }}
       />
-
-
-
-      {/* 3. FULLSCREEN LIGHTBOX MODAL */}
-      <AnimatePresence>
-        {activeLightboxIndex !== null && initialGalleryImages[activeLightboxIndex] && (
-          <motion.div
-            className="gallery-lightbox-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleCloseLightbox}
-          >
-            <div className="gallery-lightbox-modal" onClick={(e) => e.stopPropagation()}>
-              <button 
-                type="button" 
-                className="lightbox-close-btn" 
-                onClick={handleCloseLightbox}
-                aria-label="Close image preview"
-              >
-                <X size={24} />
-              </button>
-
-              <button 
-                type="button" 
-                className="lightbox-nav-btn prev" 
-                onClick={handlePrevPhoto}
-                aria-label="Previous image"
-              >
-                <ChevronLeft size={28} />
-              </button>
-
-              <div className="lightbox-image-container">
-                <img 
-                  src={initialGalleryImages[activeLightboxIndex].image} 
-                  alt={initialGalleryImages[activeLightboxIndex].title} 
-                  className="lightbox-full-image"
-                />
-                <div className="lightbox-caption">
-                  <div className="lightbox-caption-tag">
-                    {initialGalleryImages[activeLightboxIndex].category}
-                  </div>
-                  <h3 className="lightbox-caption-title">
-                    {initialGalleryImages[activeLightboxIndex].title}
-                  </h3>
-                  {initialGalleryImages[activeLightboxIndex].description && (
-                    <p className="lightbox-caption-text">
-                      {initialGalleryImages[activeLightboxIndex].description}
-                    </p>
-                  )}
-                  <div className="lightbox-counter">
-                    {activeLightboxIndex + 1} / {initialGalleryImages.length}
-                  </div>
-                </div>
-              </div>
-
-              <button 
-                type="button" 
-                className="lightbox-nav-btn next" 
-                onClick={handleNextPhoto}
-                aria-label="Next image"
-              >
-                <ChevronRight size={28} />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

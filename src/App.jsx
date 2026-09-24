@@ -10,6 +10,7 @@ import AboutPage from './pages/AboutPage';
 import RestaurantPage from './pages/RestaurantPage';
 import ContactPage from './pages/ContactPage';
 import GalleryPage from './pages/GalleryPage';
+import FloatingContactButtons from './components/FloatingContactButtons';
 import './components/components.css';
 
 export default function App() {
@@ -169,6 +170,9 @@ export default function App() {
         isOpen={isBookingOpen} 
         onClose={handleCloseBooking} 
       />
+
+      {/* Floating Direct Call & WhatsApp Contact Actions */}
+      <FloatingContactButtons />
     </div>
   );
 }
