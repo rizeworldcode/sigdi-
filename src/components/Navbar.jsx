@@ -149,7 +149,7 @@ export default function Navbar({ onOpenBooking, currentPage = 'home', onNavigate
                 Gallery
               </a>
               <button 
-                className="mobile-contact-btn" 
+                className={`mobile-contact-btn ${currentPage === 'contact' ? 'active-mobile' : ''}`} 
                 onClick={(e) => handleMobileNavClick(e, 'contact')}
               >
                 → Contact

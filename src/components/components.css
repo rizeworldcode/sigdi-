@@ -287,11 +287,18 @@
   font-size: 16px;
   font-weight: 500;
   color: #ffffff;
-  transition: color 0.2s ease;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: block;
 }
 
-.mobile-dropdown a:hover {
-  color: var(--color-pink);
+.mobile-dropdown a:hover,
+.mobile-dropdown a:focus,
+.mobile-dropdown a:active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .mobile-contact-btn {
@@ -2885,10 +2892,18 @@
 }
 
 .mobile-dropdown a.active-mobile {
-  color: #111111 !important;
-  font-weight: 700;
-  padding-left: 6px;
-  border-left: 2px solid #111111;
+  color: #ffffff !important;
+  font-weight: 600;
+  padding-left: 12px;
+  border-left: 3px solid #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0 8px 8px 0;
+}
+
+.mobile-contact-btn.active-mobile {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
 }
 
 /* Page View Wrappers */
